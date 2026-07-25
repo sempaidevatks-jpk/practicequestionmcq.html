@@ -2,469 +2,531 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>CMA Part 1 - Section B: Strategic Planning Practice Quiz</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f9;
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #2d3748;
+            line-height: 1.5;
+            margin: 0;
+            padding: 12px;
+            padding-bottom: 90px; /* Space for sticky submit button on mobile */
+        }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 20px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
         }
+
         h1 {
             color: #1a365d;
             text-align: center;
+            font-size: 1.4rem;
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 10px;
-            margin-bottom: 25px;
-        }
-        .question-card {
-            background-color: #fafafa;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            padding: 15px 20px;
+            padding-bottom: 12px;
+            margin-top: 5px;
             margin-bottom: 20px;
         }
+
+        .question-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 18px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
         .question-title {
             font-weight: 600;
-            font-size: 1.05rem;
-            color: #2d3748;
-            margin-bottom: 12px;
+            font-size: 1rem;
+            color: #1a202c;
+            margin-bottom: 14px;
         }
+
         .options {
             list-style-type: none;
             padding: 0;
             margin: 0;
         }
+
         .options li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
+
+        /* Touch-optimized labels */
         .options label {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: background-color 0.2s;
+            padding: 12px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            font-size: 0.95rem;
+            min-height: 48px; /* Touch-target size guideline */
+            transition: background-color 0.15s ease, border-color 0.15s ease;
         }
-        .options label:hover {
+
+        .options label:active {
             background-color: #edf2f7;
         }
+
         .options input[type="radio"] {
+            margin-top: 3px;
             margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            accent-color: #2b6cb0;
         }
+
+        /* Sticky bottom action bar for mobile convenience */
         .btn-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 12px 16px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
-            margin-top: 30px;
+            z-index: 100;
         }
+
         .btn {
             background-color: #2b6cb0;
             color: white;
             border: none;
-            padding: 12px 28px;
-            font-size: 1rem;
+            width: 100%;
+            max-width: 400px;
+            padding: 14px 20px;
+            font-size: 1.05rem;
             font-weight: bold;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.2s;
         }
-        .btn:hover {
-            background-color: #2c5282;
+
+        .btn:hover, .btn:active {
+            background-color: #1c4ed8;
         }
+
         #result {
             display: none;
-            margin-top: 25px;
-            padding: 20px;
+            margin-top: 20px;
+            padding: 18px;
             text-align: center;
             background-color: #ebf8ff;
             border: 1px solid #bee3f8;
-            border-radius: 6px;
+            border-radius: 10px;
         }
+
         #result h2 {
-            margin: 0 0 10px 0;
+            margin: 0 0 8px 0;
+            font-size: 1.3rem;
             color: #2b6cb0;
         }
-        .correct {
-            color: #276749 !important;
-            font-weight: bold;
+
+        /* State styles after evaluation */
+        .correct-answer {
+            background-color: #f0fff4 !important;
+            border-color: #38a169 !important;
+            color: #22543d !important;
+            font-weight: 600;
         }
-        .incorrect {
-            color: #9b2c2c !important;
+
+        .incorrect-answer {
+            background-color: #fff5f5 !important;
+            border-color: #e53e3e !important;
+            color: #742a2a !important;
         }
+
         .explanation {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: #4a5568;
-            margin-top: 5px;
-            margin-left: 32px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #edf2f7;
+            border-left: 4px solid #2b6cb0;
+            border-radius: 4px;
             display: none;
+        }
+
+        /* Desktop Adjustments */
+        @media (min-width: 640px) {
+            body {
+                padding: 24px;
+                padding-bottom: 24px;
+            }
+            .container {
+                padding: 32px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .question-title {
+                font-size: 1.1rem;
+            }
+            .btn-container {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                padding: 0;
+                margin-top: 25px;
+            }
+            .btn {
+                width: auto;
+                min-width: 220px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Strategic Planning - Practice Questions</h1>
+    <h1>Strategic Planning - Practice Quiz</h1>
     <form id="quizForm">
 
         <div class="question-card" id="q1">
             <div class="question-title">1. While preparing its mission statement, a company is deciding what information should be included. Which of the following items would be least suitable for inclusion in the mission statement?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q1" value="A"> Clarifying the organization's fundamental purpose.</label></li>
-                <li><label><input type="radio" name="q1" value="B"> Inspiring employees with a shared organizational direction.</label></li>
-                <li><label><input type="radio" name="q1" value="C"> Stating the primary products or services offered.</label></li>
-                <li><label><input type="radio" name="q1" value="D"> Outlining detailed methods for expanding market share in a particular region.</label></li>
+                <li><label><input type="radio" name="q1" value="A"><span>Clarifying the organization's fundamental purpose.</span></label></li>
+                <li><label><input type="radio" name="q1" value="B"><span>Inspiring employees with a shared organizational direction.</span></label></li>
+                <li><label><input type="radio" name="q1" value="C"><span>Stating the primary products or services offered.</span></label></li>
+                <li><label><input type="radio" name="q1" value="D"><span>Outlining detailed methods for expanding market share in a particular region.</span></label></li>
             </ul>
-            <div class="explanation" id="exp1">Correct Answer: D. Detailed operational or tactical plans do not belong in a high-level mission statement.</div>
+            <div class="explanation" id="exp1"><b>Correct Answer: D</b> — Detailed operational or tactical plans do not belong in a high-level mission statement.</div>
         </div>
 
         <div class="question-card" id="q2">
             <div class="question-title">2. A business offers a product that serves a broad customer base while being viewed as distinct from competing products. As a result, it consistently earns above-average profits. Which competitive strategy best describes this approach?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q2" value="A"> Focus strategy.</label></li>
-                <li><label><input type="radio" name="q2" value="B"> Product differentiation strategy.</label></li>
-                <li><label><input type="radio" name="q2" value="C"> Financial leadership strategy.</label></li>
-                <li><label><input type="radio" name="q2" value="D"> Cost focus strategy.</label></li>
+                <li><label><input type="radio" name="q2" value="A"><span>Focus strategy.</span></label></li>
+                <li><label><input type="radio" name="q2" value="B"><span>Product differentiation strategy.</span></label></li>
+                <li><label><input type="radio" name="q2" value="C"><span>Financial leadership strategy.</span></label></li>
+                <li><label><input type="radio" name="q2" value="D"><span>Cost focus strategy.</span></label></li>
             </ul>
-            <div class="explanation" id="exp2">Correct Answer: B. Offering a distinct product to a broad market is a Product Differentiation Strategy.</div>
+            <div class="explanation" id="exp2"><b>Correct Answer: B</b> — Offering a distinct product to a broad market is a Product Differentiation Strategy.</div>
         </div>
 
         <div class="question-card" id="q3">
             <div class="question-title">3. According to Porter's Five Forces framework, the combined influence of the competitive forces primarily determines which of the following?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q3" value="A"> The industry's long-term profitability and level of competition.</label></li>
-                <li><label><input type="radio" name="q3" value="B"> The exact strategy every company should adopt.</label></li>
-                <li><label><input type="radio" name="q3" value="C"> The barriers faced by potential new entrants only.</label></li>
-                <li><label><input type="radio" name="q3" value="D"> The degree of rivalry among existing competitors only.</label></li>
+                <li><label><input type="radio" name="q3" value="A"><span>The industry's long-term profitability and level of competition.</span></label></li>
+                <li><label><input type="radio" name="q3" value="B"><span>The exact strategy every company should adopt.</span></label></li>
+                <li><label><input type="radio" name="q3" value="C"><span>The barriers faced by potential new entrants only.</span></label></li>
+                <li><label><input type="radio" name="q3" value="D"><span>The degree of rivalry among existing competitors only.</span></label></li>
             </ul>
-            <div class="explanation" id="exp3">Correct Answer: A. Five Forces analysis evaluates overall industry attractiveness and long-term profit potential.</div>
+            <div class="explanation" id="exp3"><b>Correct Answer: A</b> — Five Forces analysis evaluates overall industry attractiveness and long-term profit potential.</div>
         </div>
 
         <div class="question-card" id="q4">
             <div class="question-title">4. As part of a strategic planning exercise, the management of a food-processing company is reviewing its internal environment. Which of the following is most likely considered an internal strategic factor?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q4" value="A"> Advances in food-processing technology.</label></li>
-                <li><label><input type="radio" name="q4" value="B"> Economic conditions affecting the labor market.</label></li>
-                <li><label><input type="radio" name="q4" value="C"> Government regulations applicable to food manufacturers.</label></li>
-                <li><label><input type="radio" name="q4" value="D"> The organizational culture within the production facility.</label></li>
+                <li><label><input type="radio" name="q4" value="A"><span>Advances in food-processing technology.</span></label></li>
+                <li><label><input type="radio" name="q4" value="B"><span>Economic conditions affecting the labor market.</span></label></li>
+                <li><label><input type="radio" name="q4" value="C"><span>Government regulations applicable to food manufacturers.</span></label></li>
+                <li><label><input type="radio" name="q4" value="D"><span>The organizational culture within the production facility.</span></label></li>
             </ul>
-            <div class="explanation" id="exp4">Correct Answer: D. Organizational culture is an internal factor unique to the company.</div>
+            <div class="explanation" id="exp4"><b>Correct Answer: D</b> — Organizational culture is an internal factor unique to the company.</div>
         </div>
 
         <div class="question-card" id="q5">
             <div class="question-title">5. When an organization develops alternative plans to deal with unexpected future events, this process is known as:</div>
             <ul class="options">
-                <li><label><input type="radio" name="q5" value="A"> Contingency planning.</label></li>
-                <li><label><input type="radio" name="q5" value="B"> Long-range business planning.</label></li>
-                <li><label><input type="radio" name="q5" value="C"> Capital investment planning.</label></li>
-                <li><label><input type="radio" name="q5" value="D"> Short-term operational planning.</label></li>
+                <li><label><input type="radio" name="q5" value="A"><span>Contingency planning.</span></label></li>
+                <li><label><input type="radio" name="q5" value="B"><span>Long-range business planning.</span></label></li>
+                <li><label><input type="radio" name="q5" value="C"><span>Capital investment planning.</span></label></li>
+                <li><label><input type="radio" name="q5" value="D"><span>Short-term operational planning.</span></label></li>
             </ul>
-            <div class="explanation" id="exp5">Correct Answer: A. Planning for unexpected alternative events is contingency planning.</div>
+            <div class="explanation" id="exp5"><b>Correct Answer: A</b> — Planning for unexpected alternative events is contingency planning.</div>
         </div>
 
         <div class="question-card" id="q6">
             <div class="question-title">6. Planning provides several important benefits to an organization. Which of the following is not considered a primary purpose of planning?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q6" value="A"> Encouraging managers to anticipate future conditions.</label></li>
-                <li><label><input type="radio" name="q6" value="B"> Improving coordination among different operating units.</label></li>
-                <li><label><input type="radio" name="q6" value="C"> Assisting in the hiring and selection of employees.</label></li>
-                <li><label><input type="radio" name="q6" value="D"> Establishing a basis for monitoring and controlling operations.</label></li>
+                <li><label><input type="radio" name="q6" value="A"><span>Encouraging managers to anticipate future conditions.</span></label></li>
+                <li><label><input type="radio" name="q6" value="B"><span>Improving coordination among different operating units.</span></label></li>
+                <li><label><input type="radio" name="q6" value="C"><span>Assisting in the hiring and selection of employees.</span></label></li>
+                <li><label><input type="radio" name="q6" value="D"><span>Establishing a basis for monitoring and controlling operations.</span></label></li>
             </ul>
-            <div class="explanation" id="exp6">Correct Answer: C. Hiring/selection is a specific HR operational function rather than a primary goal of organizational strategic planning.</div>
+            <div class="explanation" id="exp6"><b>Correct Answer: C</b> — Hiring and selection are HR operational functions rather than a primary goal of organizational strategic planning.</div>
         </div>
 
         <div class="question-card" id="q7">
             <div class="question-title">7. Evaluating a company's technology, workforce capabilities, and effectiveness of its sales force helps identify:</div>
             <ul class="options">
-                <li><label><input type="radio" name="q7" value="A"> External strengths and external threats.</label></li>
-                <li><label><input type="radio" name="q7" value="B"> External strengths and external weaknesses.</label></li>
-                <li><label><input type="radio" name="q7" value="C"> Internal strengths and external opportunities.</label></li>
-                <li><label><input type="radio" name="q7" value="D"> Internal strengths and internal weaknesses.</label></li>
+                <li><label><input type="radio" name="q7" value="A"><span>External strengths and external threats.</span></label></li>
+                <li><label><input type="radio" name="q7" value="B"><span>External strengths and external weaknesses.</span></label></li>
+                <li><label><input type="radio" name="q7" value="C"><span>Internal strengths and external opportunities.</span></label></li>
+                <li><label><input type="radio" name="q7" value="D"><span>Internal strengths and internal weaknesses.</span></label></li>
             </ul>
-            <div class="explanation" id="exp7">Correct Answer: D. Evaluating internal resources (technology, workforce, sales force) reveals internal strengths and internal weaknesses.</div>
+            <div class="explanation" id="exp7"><b>Correct Answer: D</b> — Evaluating internal resources (technology, workforce, sales force) reveals internal strengths and internal weaknesses.</div>
         </div>
 
         <div class="question-card" id="q8">
             <div class="question-title">8. A company's unique competencies primarily originate from which of the following?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q8" value="A"> Its ability to generate sustained profits.</label></li>
-                <li><label><input type="radio" name="q8" value="B"> Its available resources and organizational capabilities.</label></li>
-                <li><label><input type="radio" name="q8" value="C"> Its previous strategic commitments.</label></li>
-                <li><label><input type="radio" name="q8" value="D"> The external opportunities and threats it faces.</label></li>
+                <li><label><input type="radio" name="q8" value="A"><span>Its ability to generate sustained profits.</span></label></li>
+                <li><label><input type="radio" name="q8" value="B"><span>Its available resources and organizational capabilities.</span></label></li>
+                <li><label><input type="radio" name="q8" value="C"><span>Its previous strategic commitments.</span></label></li>
+                <li><label><input type="radio" name="q8" value="D"><span>The external opportunities and threats it faces.</span></label></li>
             </ul>
-            <div class="explanation" id="exp8">Correct Answer: B. Distinctive competencies stem directly from internal resources and capabilities.</div>
+            <div class="explanation" id="exp8"><b>Correct Answer: B</b> — Distinctive competencies stem directly from internal resources and capabilities.</div>
         </div>
 
         <div class="question-card" id="q9">
             <div class="question-title">9. During strategic planning, which of the following should be analyzed as an external environmental factor?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q9" value="A"> Society's culture and values.</label></li>
-                <li><label><input type="radio" name="q9" value="B"> The company's organizational culture.</label></li>
-                <li><label><input type="radio" name="q9" value="C"> The firm's organizational structure.</label></li>
-                <li><label><input type="radio" name="q9" value="D"> Employee motivation and morale.</label></li>
+                <li><label><input type="radio" name="q9" value="A"><span>Society's culture and values.</span></label></li>
+                <li><label><input type="radio" name="q9" value="B"><span>The company's organizational culture.</span></label></li>
+                <li><label><input type="radio" name="q9" value="C"><span>The firm's organizational structure.</span></label></li>
+                <li><label><input type="radio" name="q9" value="D"><span>Employee motivation and morale.</span></label></li>
             </ul>
-            <div class="explanation" id="exp9">Correct Answer: A. Societal culture and values are macro-environmental (PESTEL) factors external to the firm.</div>
+            <div class="explanation" id="exp9"><b>Correct Answer: A</b> — Societal culture and values are macro-environmental (PESTEL) factors external to the firm.</div>
         </div>
 
         <div class="question-card" id="q10">
             <div class="question-title">10. A company consistently outperforms its competitors in a highly competitive industry. Which statement best explains its superior performance?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q10" value="A"> It follows a more detailed formal strategic planning process.</label></li>
-                <li><label><input type="radio" name="q10" value="B"> Its chosen strategies create stronger performance than those of its competitors.</label></li>
-                <li><label><input type="radio" name="q10" value="C"> It has adopted a multidivisional organizational structure.</label></li>
-                <li><label><input type="radio" name="q10" value="D"> It follows a strategy that minimizes risk-taking.</label></li>
+                <li><label><input type="radio" name="q10" value="A"><span>It follows a more detailed formal strategic planning process.</span></label></li>
+                <li><label><input type="radio" name="q10" value="B"><span>Its chosen strategies create stronger performance than those of its competitors.</span></label></li>
+                <li><label><input type="radio" name="q10" value="C"><span>It has adopted a multidivisional organizational structure.</span></label></li>
+                <li><label><input type="radio" name="q10" value="D"><span>It follows a strategy that minimizes risk-taking.</span></label></li>
             </ul>
-            <div class="explanation" id="exp10">Correct Answer: B. Superior performance is driven by executing strategies that deliver competitive advantages relative to rivals.</div>
+            <div class="explanation" id="exp10"><b>Correct Answer: B</b> — Superior performance is driven by executing strategies that deliver competitive advantages relative to rivals.</div>
         </div>
 
         <div class="question-card" id="q11">
             <div class="question-title">11. Strategic analysis generally focuses on long-term objectives and organizational direction. Which of the following would normally be excluded from strategic analysis?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q11" value="A"> Determining the product mix and production schedule for the current year.</label></li>
-                <li><label><input type="radio" name="q11" value="B"> Selecting the organizational structure that best supports the business.</label></li>
-                <li><label><input type="radio" name="q11" value="C"> Deciding how to allocate resources among research, production, marketing, and distribution.</label></li>
-                <li><label><input type="radio" name="q11" value="D"> Assessing market trends that may influence future operations.</label></li>
+                <li><label><input type="radio" name="q11" value="A"><span>Determining the product mix and production schedule for the current year.</span></label></li>
+                <li><label><input type="radio" name="q11" value="B"><span>Selecting the organizational structure that best supports the business.</span></label></li>
+                <li><label><input type="radio" name="q11" value="C"><span>Deciding how to allocate resources among research, production, marketing, and distribution.</span></label></li>
+                <li><label><input type="radio" name="q11" value="D"><span>Assessing market trends that may influence future operations.</span></label></li>
             </ul>
-            <div class="explanation" id="exp11">Correct Answer: A. Short-term scheduling for the current year is an operational decision, not a strategic one.</div>
+            <div class="explanation" id="exp11"><b>Correct Answer: A</b> — Short-term scheduling for the current year is an operational decision, not a strategic one.</div>
         </div>
 
         <div class="question-card" id="q12">
             <div class="question-title">12. Company profitability depends on several fundamental factors. Which of the following is not one of these basic drivers?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q12" value="A"> The value customers place on the company's products or services.</label></li>
-                <li><label><input type="radio" name="q12" value="B"> The cost incurred to produce those products or services.</label></li>
-                <li><label><input type="radio" name="q12" value="C"> The selling price charged to customers.</label></li>
-                <li><label><input type="radio" name="q12" value="D"> A highly innovative research and development program.</label></li>
+                <li><label><input type="radio" name="q12" value="A"><span>The value customers place on the company's products or services.</span></label></li>
+                <li><label><input type="radio" name="q12" value="B"><span>The cost incurred to produce those products or services.</span></label></li>
+                <li><label><input type="radio" name="q12" value="C"><span>The selling price charged to customers.</span></label></li>
+                <li><label><input type="radio" name="q12" value="D"><span>A highly innovative research and development program.</span></label></li>
             </ul>
-            <div class="explanation" id="exp12">Correct Answer: D. Value, Price, and Cost are the core economic drivers of profit margin. R&D is a function/strategy.</div>
+            <div class="explanation" id="exp12"><b>Correct Answer: D</b> — Value, Price, and Cost are the core economic drivers of profit margin. R&D is a function/strategy.</div>
         </div>
 
         <div class="question-card" id="q13">
             <div class="question-title">13. A company that possesses a sustainable competitive advantage over its rivals is most likely to:</div>
             <ul class="options">
-                <li><label><input type="radio" name="q13" value="A"> Deliver products to customers faster than every competitor.</label></li>
-                <li><label><input type="radio" name="q13" value="B"> Spend more on advertising than competing firms.</label></li>
-                <li><label><input type="radio" name="q13" value="C"> Earn profits above the industry average.</label></li>
-                <li><label><input type="radio" name="q13" value="D"> Maintain a broader distribution network than all competitors.</label></li>
+                <li><label><input type="radio" name="q13" value="A"><span>Deliver products to customers faster than every competitor.</span></label></li>
+                <li><label><input type="radio" name="q13" value="B"><span>Spend more on advertising than competing firms.</span></label></li>
+                <li><label><input type="radio" name="q13" value="C"><span>Earn profits above the industry average.</span></label></li>
+                <li><label><input type="radio" name="q13" value="D"><span>Maintain a broader distribution network than all competitors.</span></label></li>
             </ul>
-            <div class="explanation" id="exp13">Correct Answer: C. The classic definition of competitive advantage is achieving sustained above-average profitability.</div>
+            <div class="explanation" id="exp13"><b>Correct Answer: C</b> — The classic definition of competitive advantage is achieving sustained above-average profitability.</div>
         </div>
 
         <div class="question-card" id="q14">
             <div class="question-title">14. Porter's Five Forces Model is designed to evaluate the competitive environment within an industry. Which of the following is not one of the five competitive forces?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q14" value="A"> Availability of substitute products or services.</label></li>
-                <li><label><input type="radio" name="q14" value="B"> Bargaining power of competitors.</label></li>
-                <li><label><input type="radio" name="q14" value="C"> Threat posed by new market entrants.</label></li>
-                <li><label><input type="radio" name="q14" value="D"> Bargaining power of suppliers.</label></li>
+                <li><label><input type="radio" name="q14" value="A"><span>Availability of substitute products or services.</span></label></li>
+                <li><label><input type="radio" name="q14" value="B"><span>Bargaining power of competitors.</span></label></li>
+                <li><label><input type="radio" name="q14" value="C"><span>Threat posed by new market entrants.</span></label></li>
+                <li><label><input type="radio" name="q14" value="D"><span>Bargaining power of suppliers.</span></label></li>
             </ul>
-            <div class="explanation" id="exp14">Correct Answer: B. The force is "Rivalry among existing competitors," not bargaining power of competitors.</div>
+            <div class="explanation" id="exp14"><b>Correct Answer: B</b> — The force is "Rivalry among existing competitors," not bargaining power of competitors.</div>
         </div>
 
         <div class="question-card" id="q15">
             <div class="question-title">15. To remain competitive and avoid failure, a company should continually focus on all of the following except:</div>
             <ul class="options">
-                <li><label><input type="radio" name="q15" value="A"> Identifying and adopting industry best practices.</label></li>
-                <li><label><input type="radio" name="q15" value="B"> Relying primarily on its past strategies and previous strategic commitments.</label></li>
-                <li><label><input type="radio" name="q15" value="C"> Encouraging continuous learning and improvement.</label></li>
-                <li><label><input type="radio" name="q15" value="D"> Strengthening the sources of its competitive advantage.</label></li>
+                <li><label><input type="radio" name="q15" value="A"><span>Identifying and adopting industry best practices.</span></label></li>
+                <li><label><input type="radio" name="q15" value="B"><span>Relying primarily on its past strategies and previous strategic commitments.</span></label></li>
+                <li><label><input type="radio" name="q15" value="C"><span>Encouraging continuous learning and improvement.</span></label></li>
+                <li><label><input type="radio" name="q15" value="D"><span>Strengthening the sources of its competitive advantage.</span></label></li>
             </ul>
-            <div class="explanation" id="exp15">Correct Answer: B. Solely relying on past strategies leads to strategic drift and competitive risk.</div>
+            <div class="explanation" id="exp15"><b>Correct Answer: B</b> — Solely relying on past strategies leads to strategic drift and competitive risk.</div>
         </div>
 
         <div class="question-card" id="q16">
             <div class="question-title">16. Which of the following plans outlines an organization's long-term direction, objectives, and position within its business environment?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q16" value="A"> Capital expenditure budget.</label></li>
-                <li><label><input type="radio" name="q16" value="B"> Strategic plan.</label></li>
-                <li><label><input type="radio" name="q16" value="C"> Cash budget.</label></li>
-                <li><label><input type="radio" name="q16" value="D"> Operating budget.</label></li>
+                <li><label><input type="radio" name="q16" value="A"><span>Capital expenditure budget.</span></label></li>
+                <li><label><input type="radio" name="q16" value="B"><span>Strategic plan.</span></label></li>
+                <li><label><input type="radio" name="q16" value="C"><span>Cash budget.</span></label></li>
+                <li><label><input type="radio" name="q16" value="D"><span>Operating budget.</span></label></li>
             </ul>
-            <div class="explanation" id="exp16">Correct Answer: B. Strategic plans dictate long-term direction and market positioning.</div>
+            <div class="explanation" id="exp16"><b>Correct Answer: B</b> — Strategic plans dictate long-term direction and market positioning.</div>
         </div>
 
         <div class="question-card" id="q17">
             <div class="question-title">17. A company has introduced a flashlight with a wireless charging feature that no competitor currently offers. Market research indicates that most customers are willing to pay a premium for this innovation. Which of Porter's competitive strategies would be most appropriate?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q17" value="A"> Cost leadership strategy.</label></li>
-                <li><label><input type="radio" name="q17" value="B"> Focus strategy.</label></li>
-                <li><label><input type="radio" name="q17" value="C"> Differentiation strategy.</label></li>
-                <li><label><input type="radio" name="q17" value="D"> Segmentation strategy.</label></li>
+                <li><label><input type="radio" name="q17" value="A"><span>Cost leadership strategy.</span></label></li>
+                <li><label><input type="radio" name="q17" value="B"><span>Focus strategy.</span></label></li>
+                <li><label><input type="radio" name="q17" value="C"><span>Differentiation strategy.</span></label></li>
+                <li><label><input type="radio" name="q17" value="D"><span>Segmentation strategy.</span></label></li>
             </ul>
-            <div class="explanation" id="exp17">Correct Answer: C. Offering unique features that command a premium price across the market is Differentiation.</div>
+            <div class="explanation" id="exp17"><b>Correct Answer: C</b> — Offering unique features that command a premium price across the market is Differentiation.</div>
         </div>
 
         <div class="question-card" id="q18">
             <div class="question-title">18. Strategic planning generally involves several key activities. Which of the following is least likely to be considered part of the strategic planning process?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q18" value="A"> Evaluating departmental operating budgets.</label></li>
-                <li><label><input type="radio" name="q18" value="B"> Studying the strengths and behavior of competitors.</label></li>
-                <li><label><input type="radio" name="q18" value="C"> Assessing external economic conditions.</label></li>
-                <li><label><input type="radio" name="q18" value="D"> Emphasizing long-term organizational success.</label></li>
+                <li><label><input type="radio" name="q18" value="A"><span>Evaluating departmental operating budgets.</span></label></li>
+                <li><label><input type="radio" name="q18" value="B"><span>Studying the strengths and behavior of competitors.</span></label></li>
+                <li><label><input type="radio" name="q18" value="C"><span>Assessing external economic conditions.</span></label></li>
+                <li><label><input type="radio" name="q18" value="D"><span>Emphasizing long-term organizational success.</span></label></li>
             </ul>
-            <div class="explanation" id="exp18">Correct Answer: A. Reviewing departmental operational budgets is part of operational control, not high-level strategy formulation.</div>
+            <div class="explanation" id="exp18"><b>Correct Answer: A</b> — Reviewing departmental operational budgets is part of operational control, not high-level strategy formulation.</div>
         </div>
 
         <div class="question-card" id="q19">
             <div class="question-title">19. When beginning the strategic planning process, management should first establish the company's:</div>
             <ul class="options">
-                <li><label><input type="radio" name="q19" value="A"> Overall organizational objectives.</label></li>
-                <li><label><input type="radio" name="q19" value="B"> Current annual budget.</label></li>
-                <li><label><input type="radio" name="q19" value="C"> Outsourcing strategy.</label></li>
-                <li><label><input type="radio" name="q19" value="D"> Organizational structure.</label></li>
+                <li><label><input type="radio" name="q19" value="A"><span>Overall organizational objectives.</span></label></li>
+                <li><label><input type="radio" name="q19" value="B"><span>Current annual budget.</span></label></li>
+                <li><label><input type="radio" name="q19" value="C"><span>Outsourcing strategy.</span></label></li>
+                <li><label><input type="radio" name="q19" value="D"><span>Organizational structure.</span></label></li>
             </ul>
-            <div class="explanation" id="exp19">Correct Answer: A. Objectives and mission serve as the initial step in strategy development.</div>
+            <div class="explanation" id="exp19"><b>Correct Answer: A</b> — Objectives and mission serve as the initial step in strategy development.</div>
         </div>
 
         <div class="question-card" id="q20">
             <div class="question-title">20. Which of the following expresses what an organization seeks to achieve and serves as the foundation for its long-term objectives?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q20" value="A"> Strategy.</label></li>
-                <li><label><input type="radio" name="q20" value="B"> Mission statement.</label></li>
-                <li><label><input type="radio" name="q20" value="C"> Core competency.</label></li>
-                <li><label><input type="radio" name="q20" value="D"> Organizational values.</label></li>
+                <li><label><input type="radio" name="q20" value="A"><span>Strategy.</span></label></li>
+                <li><label><input type="radio" name="q20" value="B"><span>Mission statement.</span></label></li>
+                <li><label><input type="radio" name="q20" value="C"><span>Core competency.</span></label></li>
+                <li><label><input type="radio" name="q20" value="D"><span>Organizational values.</span></label></li>
             </ul>
-            <div class="explanation" id="exp20">Correct Answer: B. The mission statement provides purpose and serves as the benchmark for establishing long-term goals.</div>
+            <div class="explanation" id="exp20"><b>Correct Answer: B</b> — The mission statement provides purpose and serves as the benchmark for establishing long-term goals.</div>
         </div>
 
         <div class="question-card" id="q21">
             <div class="question-title">21. The overall approach that management adopts to achieve one or more organizational objectives is known as:</div>
             <ul class="options">
-                <li><label><input type="radio" name="q21" value="A"> Designing the company's organizational structure.</label></li>
-                <li><label><input type="radio" name="q21" value="B"> Strategy.</label></li>
-                <li><label><input type="radio" name="q21" value="C"> Capital investment planning.</label></li>
-                <li><label><input type="radio" name="q21" value="D"> Establishing the company's business model.</label></li>
+                <li><label><input type="radio" name="q21" value="A"><span>Designing the company's organizational structure.</span></label></li>
+                <li><label><input type="radio" name="q21" value="B"><span>Strategy.</span></label></li>
+                <li><label><input type="radio" name="q21" value="C"><span>Capital investment planning.</span></label></li>
+                <li><label><input type="radio" name="q21" value="D"><span>Establishing the company's business model.</span></label></li>
             </ul>
-            <div class="explanation" id="exp21">Correct Answer: B. Strategy is the overall plan or approach chosen to reach goals.</div>
+            <div class="explanation" id="exp21"><b>Correct Answer: B</b> — Strategy is the overall plan or approach chosen to reach goals.</div>
         </div>
 
         <div class="question-card" id="q22">
             <div class="question-title">22. Which of the following is not a characteristic commonly associated with a tactical plan?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q22" value="A"> It is primarily developed and implemented by top management.</label></li>
-                <li><label><input type="radio" name="q22" value="B"> It addresses areas such as production, inventory, cash flow, and income planning.</label></li>
-                <li><label><input type="radio" name="q22" value="C"> It relies heavily on quantitative information.</label></li>
-                <li><label><input type="radio" name="q22" value="D"> It generally covers a planning period of one to five years.</label></li>
+                <li><label><input type="radio" name="q22" value="A"><span>It is primarily developed and implemented by top management.</span></label></li>
+                <li><label><input type="radio" name="q22" value="B"><span>It addresses areas such as production, inventory, cash flow, and income planning.</span></label></li>
+                <li><label><input type="radio" name="q22" value="C"><span>It relies heavily on quantitative information.</span></label></li>
+                <li><label><input type="radio" name="q22" value="D"><span>It generally covers a planning period of one to five years.</span></label></li>
             </ul>
-            <div class="explanation" id="exp22">Correct Answer: A. Tactical plans are handled by middle managers; strategic plans are driven by top executive management.</div>
+            <div class="explanation" id="exp22"><b>Correct Answer: A</b> — Tactical plans are handled by middle managers; strategic plans are driven by top executive management.</div>
         </div>
 
         <div class="question-card" id="q23">
             <div class="question-title">23. A company's competitive advantage is built on four key factors that arise from its distinctive competencies. Which of the following correctly identifies these factors?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q23" value="A"> Superior efficiency, high quality, innovation, and customer responsiveness.</label></li>
-                <li><label><input type="radio" name="q23" value="B"> Continuous improvement, organizational learning, prior strategic commitments, and absorptive capacity.</label></li>
-                <li><label><input type="radio" name="q23" value="C"> Employee productivity, capital productivity, product innovation, and process innovation.</label></li>
-                <li><label><input type="radio" name="q23" value="D"> Customer value, selling price, production cost, and profitability.</label></li>
+                <li><label><input type="radio" name="q23" value="A"><span>Superior efficiency, high quality, innovation, and customer responsiveness.</span></label></li>
+                <li><label><input type="radio" name="q23" value="B"><span>Continuous improvement, organizational learning, prior strategic commitments, and absorptive capacity.</span></label></li>
+                <li><label><input type="radio" name="q23" value="C"><span>Employee productivity, capital productivity, product innovation, and process innovation.</span></label></li>
+                <li><label><input type="radio" name="q23" value="D"><span>Customer value, selling price, production cost, and profitability.</span></label></li>
             </ul>
-            <div class="explanation" id="exp23">Correct Answer: A. Efficiency, Quality, Innovation, and Customer Responsiveness are Hill & Jones' 4 building blocks of competitive advantage.</div>
+            <div class="explanation" id="exp23"><b>Correct Answer: A</b> — Efficiency, Quality, Innovation, and Customer Responsiveness are Hill & Jones' 4 building blocks of competitive advantage.</div>
         </div>
 
         <div class="question-card" id="q24">
             <div class="question-title">24. Organizations can achieve competitive advantage through several generic competitive strategies. Which of the following is not one of these strategies?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q24" value="A"> Differentiation.</label></li>
-                <li><label><input type="radio" name="q24" value="B"> Innovation.</label></li>
-                <li><label><input type="radio" name="q24" value="C"> Focused cost leadership.</label></li>
-                <li><label><input type="radio" name="q24" value="D"> Cost leadership.</label></li>
+                <li><label><input type="radio" name="q24" value="A"><span>Differentiation.</span></label></li>
+                <li><label><input type="radio" name="q24" value="B"><span>Innovation.</span></label></li>
+                <li><label><input type="radio" name="q24" value="C"><span>Focused cost leadership.</span></label></li>
+                <li><label><input type="radio" name="q24" value="D"><span>Cost leadership.</span></label></li>
             </ul>
-            <div class="explanation" id="exp24">Correct Answer: B. "Innovation" is a driver/building block, not one of Porter's generic competitive business strategies.</div>
+            <div class="explanation" id="exp24"><b>Correct Answer: B</b> — "Innovation" is a driver/building block, not one of Porter's generic competitive business strategies.</div>
         </div>
 
         <div class="question-card" id="q25">
             <div class="question-title">25. The primary purpose of a company's mission statement is to define:</div>
             <ul class="options">
-                <li><label><input type="radio" name="q25" value="A"> The specific actions management should take.</label></li>
-                <li><label><input type="radio" name="q25" value="B"> The organization's profit targets.</label></li>
-                <li><label><input type="radio" name="q25" value="C"> The company's weaknesses.</label></li>
-                <li><label><input type="radio" name="q25" value="D"> The fundamental reason for the company's existence.</label></li>
+                <li><label><input type="radio" name="q25" value="A"><span>The specific actions management should take.</span></label></li>
+                <li><label><input type="radio" name="q25" value="B"><span>The organization's profit targets.</span></label></li>
+                <li><label><input type="radio" name="q25" value="C"><span>The company's weaknesses.</span></label></li>
+                <li><label><input type="radio" name="q25" value="D"><span>The fundamental reason for the company's existence.</span></label></li>
             </ul>
-            <div class="explanation" id="exp25">Correct Answer: D. A mission statement specifies an organization's core purpose.</div>
+            <div class="explanation" id="exp25"><b>Correct Answer: D</b> — A mission statement specifies an organization's core purpose.</div>
         </div>
 
         <div class="question-card" id="q26">
             <div class="question-title">26. A premium bottled water company controls 60% of the market and operates in an industry with significant entry barriers. However, supermarkets—the company's largest customers—are becoming larger through consolidation, increasing their bargaining power. Based on Porter's Five Forces, which statement best describes this industry?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q26" value="A"> Industry profitability is low because substitutes and new entrants pose little threat.</label></li>
-                <li><label><input type="radio" name="q26" value="B"> Industry profitability is high because both buyers and suppliers have strong bargaining power.</label></li>
-                <li><label><input type="radio" name="q26" value="C"> Profitability is currently low but is expected to improve as buyers gain more power.</label></li>
-                <li><label><input type="radio" name="q26" value="D"> Profitability is currently high but may decline as the bargaining power of buyers increases.</label></li>
+                <li><label><input type="radio" name="q26" value="A"><span>Industry profitability is low because substitutes and new entrants pose little threat.</span></label></li>
+                <li><label><input type="radio" name="q26" value="B"><span>Industry profitability is high because both buyers and suppliers have strong bargaining power.</span></label></li>
+                <li><label><input type="radio" name="q26" value="C"><span>Profitability is currently low but is expected to improve as buyers gain more power.</span></label></li>
+                <li><label><input type="radio" name="q26" value="D"><span>Profitability is currently high but may decline as the bargaining power of buyers increases.</span></label></li>
             </ul>
-            <div class="explanation" id="exp26">Correct Answer: D. High market share and entry barriers support current profitability, but buyer consolidation threatens margins over time.</div>
+            <div class="explanation" id="exp26"><b>Correct Answer: D</b> — High market share and entry barriers support current profitability, but buyer consolidation threatens margins over time.</div>
         </div>
 
         <div class="question-card" id="q27">
             <div class="question-title">27. Cerawell Products Company is experiencing several operational challenges. Which of the following situations is least controllable by management during the current fiscal year?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q27" value="A"> Suppliers request renegotiation of contract prices because of inflation.</label></li>
-                <li><label><input type="radio" name="q27" value="B"> Experienced employees resign to join competing firms.</label></li>
-                <li><label><input type="radio" name="q27" value="C"> A competitor introduces a major technological innovation that significantly improves product quality and captures market share.</label></li>
-                <li><label><input type="radio" name="q27" value="D"> A newly purchased machine fails to improve labor efficiency as expected.</label></li>
+                <li><label><input type="radio" name="q27" value="A"><span>Suppliers request renegotiation of contract prices because of inflation.</span></label></li>
+                <li><label><input type="radio" name="q27" value="B"><span>Experienced employees resign to join competing firms.</span></label></li>
+                <li><label><input type="radio" name="q27" value="C"><span>A competitor introduces a major technological innovation that significantly improves product quality and captures market share.</span></label></li>
+                <li><label><input type="radio" name="q27" value="D"><span>A newly purchased machine fails to improve labor efficiency as expected.</span></label></li>
             </ul>
-            <div class="explanation" id="exp27">Correct Answer: C. Competitor innovations in the market are external threats that cannot be directly controlled by management.</div>
+            <div class="explanation" id="exp27"><b>Correct Answer: C</b> — Competitor innovations in the market are external threats that cannot be directly controlled by management.</div>
         </div>
 
         <div class="question-card" id="q28">
             <div class="question-title">28. As part of strategic planning, organizations perform an external analysis to identify opportunities and threats. Which of the following is not normally included in an external analysis?</div>
             <ul class="options">
-                <li><label><input type="radio" name="q28" value="A"> Evaluating the competitive characteristics of the industry.</label></li>
-                <li><label><input type="radio" name="q28" value="B"> Assessing the national business environment.</label></li>
-                <li><label><input type="radio" name="q28" value="C"> Identifying the organization's internal strengths and weaknesses.</label></li>
-                <li><label><input type="radio" name="q28" value="D"> Examining the broader macroeconomic environment.</label></li>
+                <li><label><input type="radio" name="q28" value="A"><span>Evaluating the competitive characteristics of the industry.</span></label></li>
+                <li><label><input type="radio" name="q28" value="B"><span>Assessing the national business environment.</span></label></li>
+                <li><label><input type="radio" name="q28" value="C"><span>Identifying the organization's internal strengths and weaknesses.</span></label></li>
+                <li><label><input type="radio" name="q28" value="D"><span>Examining the broader macroeconomic environment.</span></label></li>
             </ul>
-            <div class="explanation" id="exp28">Correct Answer: C. Internal strengths and weaknesses are part of internal analysis, not external analysis.</div>
+            <div class="explanation" id="exp28"><b>Correct Answer: C</b> — Internal strengths and weaknesses are part of internal analysis, not external analysis.</div>
+        </div>
+
+        <div id="result">
+            <h2 id="scoreTitle"></h2>
+            <p id="scoreDetail"></p>
         </div>
 
         <div class="btn-container">
             <button type="button" class="btn" onclick="calculateScore()">Submit Quiz</button>
         </div>
     </form>
-
-    <div id="result">
-        <h2 id="scoreTitle"></h2>
-        <p id="scoreDetail"></p>
-    </div>
 </div>
 
 <script>
     const correctAnswers = {
-        q1: "D",
-        q2: "B",
-        q3: "A",
-        q4: "D",
-        q5: "A",
-        q6: "C",
-        q7: "D",
-        q8: "B",
-        q9: "A",
-        q10: "B",
-        q11: "A",
-        q12: "D",
-        q13: "C",
-        q14: "B",
-        q15: "B",
-        q16: "B",
-        q17: "C",
-        q18: "A",
-        q19: "A",
-        q20: "B",
-        q21: "B",
-        q22: "A",
-        q23: "A",
-        q24: "B",
-        q25: "D",
-        q26: "D",
-        q27: "C",
-        q28: "C"
+        q1: "D", q2: "B", q3: "A", q4: "D", q5: "A",
+        q6: "C", q7: "D", q8: "B", q9: "A", q10: "B",
+        q11: "A", q12: "D", q13: "C", q14: "B", q15: "B",
+        q16: "B", q17: "C", q18: "A", q19: "A", q20: "B",
+        q21: "B", q22: "A", q23: "A", q24: "B", q25: "D",
+        q26: "D", q27: "C", q28: "C"
     };
 
     function calculateScore() {
@@ -474,16 +536,25 @@
 
         for (let q in correctAnswers) {
             const selected = form.querySelector(`input[name="${q}"]:checked`);
+            const allRadios = form.querySelectorAll(`input[name="${q}"]`);
             const exp = document.getElementById(`exp${q.replace('q','')}`);
+            
             exp.style.display = 'block';
 
-            if (selected) {
-                if (selected.value === correctAnswers[q]) {
-                    score++;
-                    selected.parentElement.classList.add('correct');
-                } else {
-                    selected.parentElement.classList.add('incorrect');
+            allRadios.forEach(radio => {
+                const label = radio.parentElement;
+                label.classList.remove('correct-answer', 'incorrect-answer');
+
+                if (radio.value === correctAnswers[q]) {
+                    label.classList.add('correct-answer');
                 }
+                if (radio.checked && radio.value !== correctAnswers[q]) {
+                    label.classList.add('incorrect-answer');
+                }
+            });
+
+            if (selected && selected.value === correctAnswers[q]) {
+                score++;
             }
         }
 
@@ -494,11 +565,13 @@
         if (percentage >= 75) {
             document.getElementById('scoreDetail').innerText = "Excellent job! You demonstrated a solid understanding of strategic planning concepts.";
         } else {
-            document.getElementById('scoreDetail').innerText = "Good attempt! Review the highlighted correct answers and explanations above to refine your understanding.";
+            document.getElementById('scoreDetail').innerText = "Good effort! Review the highlighted correct options and explanations above.";
         }
 
         resultDiv.style.display = 'block';
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        
+        // Smooth scroll to score summary
+        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 </script>
 
